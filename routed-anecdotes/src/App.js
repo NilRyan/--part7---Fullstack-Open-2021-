@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Switch, Route, useRouteMatch} from 'react-router-dom'
+import { Link, Switch, Route, useRouteMatch, useHistory} from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -96,7 +96,20 @@ const Anecdote = ({anecdote}) => {
   )
 }
 
+const Notification = ({notification}) => {
+  if(notification){
+    return (
+      <div style={{border: '2px solid green', marginTop: '10px'}}>
+        {notification}
+      </div>
+    )
+  } else {
+    return null
+  }
+}
+
 const App = () => {
+  const history = useHistory()
   const [anecdotes, setAnecdotes] = useState([
     {
       content: 'If it hurts, do it more often',
@@ -119,6 +132,11 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
     setAnecdotes(anecdotes.concat(anecdote))
+    history.push('/')
+    setNotification(`a new anecdote '${anecdote.content}' has been added`)
+    setTimeout(() => {
+      setNotification('')
+    }, 10000)
   }
 
   const anecdoteById = (id) =>
@@ -136,11 +154,12 @@ const App = () => {
   }
   const match = useRouteMatch('/anecdotes/:id')
   const anecdote = match ? anecdoteById(match.params.id): null
- 
+  
   return (
     <div>
       <h1>Software anecdotes</h1>
       <Menu />
+      <Notification notification={notification} />
       <Switch>
         <Route path="/about">
           <About />
