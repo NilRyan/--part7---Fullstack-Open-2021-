@@ -62,6 +62,11 @@ const CreateNew = (props) => {
       votes: 0
     })
   }
+  const handleReset = () => {
+    content.reset();
+    author.reset();
+    info.reset();
+  }
 
   return (
     <div>
@@ -79,8 +84,9 @@ const CreateNew = (props) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
+      <button onClick={handleReset}>reset</button>
     </div>
   )
 
