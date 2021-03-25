@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch, Link} from 'react-router-dom'
+import { Route, Switch, Link, useRouteMatch} from 'react-router-dom'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
@@ -11,7 +11,7 @@ import { setBlogs, create } from './reducers/blogsReducer'
 import { addNotif, removeNotif, addErrorNotif } from './reducers/notificationReducer'
 import { setUser, logoutUser } from './reducers/userReducer'
 import { Container } from "@chakra-ui/react"
-import Users from './components/Users'
+import Users, { UserBlog } from './components/Users'
 import Header from './components/Header'
 
 const App = () => {
@@ -19,6 +19,7 @@ const App = () => {
   const blogs = useSelector(state => state.blogs)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  
   const user = useSelector((state) => state.user)
   const [newBlog, setNewBlog] = useState({
     title: '',
@@ -109,40 +110,47 @@ const App = () => {
       }, 3000)
   }
  
-  
+  const match = useRouteMatch("/users/:id");
+  const userBlogs = match ? blogs.filter((blog) => blog.user.id === match.params.id)
+    : null
+
   return (
     <Container >
-    <Error />
-    <Notifications />
-   
-      <Header user={user} handleLogout={handleLogout} />
-    <Switch>
-
-
-    </Switch>
-      <Route path="/api/users">
-       <Users />
-      </Route>
-
-      <Route path="/">
-        <BlogsDisplay
-          user={user}
-          newBlog={newBlog}
-          blogs={blogs}
-          handleInput={handleInput}
-          handleSubmittedBlog={handleSubmittedBlog}
-          handleError={handleError}
-          />
-      </Route>
-    <LoginForm
-     user={user}
-     username={username} 
-     password={password}
-     handlePassword={handlePassword}
-     handleUser={handleUser}
-     handleLogin={handleLogin}
-     blogService={blogService} /> 
+      <Error />
+      <Notifications />
     
+        <Header user={user} handleLogout={handleLogout} />
+      <Switch>
+
+        <Route path="/users/:id">
+          <UserBlog blogs={userBlogs} />
+        </Route>
+        <Route path="/users">
+        <Users />
+        </Route>
+
+        <Route path="/">
+          <BlogsDisplay
+            user={user}
+            newBlog={newBlog}
+            blogs={blogs}
+            handleInput={handleInput}
+            handleSubmittedBlog={handleSubmittedBlog}
+            handleError={handleError}
+            />
+        </Route>
+
+      </Switch>
+
+      <LoginForm
+      user={user}
+      username={username} 
+      password={password}
+      handlePassword={handlePassword}
+      handleUser={handleUser}
+      handleLogin={handleLogin}
+      blogService={blogService} /> 
+      
     </Container>
   )
 }

@@ -9,6 +9,7 @@ import {
   Td,
   TableCaption,
 } from "@chakra-ui/react"
+import { Link } from 'react-router-dom'
 
 const Users = () => {
 
@@ -16,7 +17,7 @@ const Users = () => {
   useEffect(() => {
     usersService.getAll().then(response => setUsers(response))
   },[])
-
+  
   console.log(users)
   if(users){
     return (
@@ -34,7 +35,7 @@ const Users = () => {
       {
         users.map((user) => (
           <Tr key={user.id}>
-            <Td>{user.name}</Td>
+            <Td><Link to={`/users/${user.id}`}>{user.name}</Link></Td>
             <Td isNumeric>{user.blogs.length}</Td>
           </Tr>
         ))
@@ -49,7 +50,32 @@ const Users = () => {
   else {
     return null
   }
+
+}
+
+export const UserBlog = ({blogs}) => {
   
+  if(blogs.length > 0){
+    console.log('blogs',blogs)
+    return (
+      <div>
+        <h1> <strong>{blogs[0].user.name} </strong></h1>
+        <h1>ADDED BLOGS</h1>
+        {
+          blogs.map((blog) => {
+            return <li key={blog.id}>{blog.title}</li>
+          })
+        }
+      </div>
+    )
+  
+  } else {
+    return null
+  }
+    
+ 
+  
+
 }
 
 export default Users
