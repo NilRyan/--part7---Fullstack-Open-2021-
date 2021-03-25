@@ -8,13 +8,14 @@ import Notifications from './components/Notications'
 import Error from './components/Error'
 import { setBlogs, create } from './reducers/blogsReducer'
 import { addNotif, removeNotif, addErrorNotif } from './reducers/notificationReducer'
+import { setUser, logoutUser } from './reducers/userReducer'
 
 const App = () => {
   const dispatch = useDispatch()
   const blogs = useSelector(state => state.blogs)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
+  const user = useSelector((state) => state.user)
   const [newBlog, setNewBlog] = useState({
     title: '',
     author: '',
@@ -31,7 +32,7 @@ const App = () => {
     const localUser = JSON.parse(window.localStorage.getItem('User'));
 
     if(localUser){
-      setUser(localUser)
+      dispatch(setUser(localUser))
       blogService.setToken(localUser.token)
 
     }
@@ -46,9 +47,9 @@ const App = () => {
       const currentUser = await loginService.login({
         username, password,
       })
-      console.log(currentUser)
+      console.log('current',currentUser)
       window.localStorage.setItem('User', JSON.stringify(currentUser))
-      setUser(currentUser)
+      dispatch(setUser(currentUser))
       blogService.setToken(currentUser.token)
       setUsername('')
       setPassword('')
@@ -68,7 +69,7 @@ const App = () => {
   const handleLogout = (e) => {
     e.preventDefault()
     console.log('logout')
-    setUser(null);
+    dispatch(logoutUser());
     window.localStorage.removeItem('User');
   }
 
