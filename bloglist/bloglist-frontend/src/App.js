@@ -9,6 +9,8 @@ import Error from './components/Error'
 import { setBlogs, create } from './reducers/blogsReducer'
 import { addNotif, removeNotif, addErrorNotif } from './reducers/notificationReducer'
 import { setUser, logoutUser } from './reducers/userReducer'
+import { Container } from "@chakra-ui/react"
+import Users from './components/Users'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -107,7 +109,7 @@ const App = () => {
  
   
   return (
-    <div>
+    <Container >
     <Error />
     <Notifications />
     <BlogsDisplay
@@ -127,7 +129,8 @@ const App = () => {
      handleUser={handleUser}
      handleLogin={handleLogin}
      blogService={blogService} /> 
-    </div>
+    <Users />
+    </Container>
   )
 }
 

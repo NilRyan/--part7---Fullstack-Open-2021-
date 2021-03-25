@@ -1,5 +1,6 @@
 import React, {useRef} from 'react'
 import Blog from './Blog'
+import { Button } from '@chakra-ui/react'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
 import CreateBlog from './CreateBlog'
@@ -24,10 +25,9 @@ const BlogsDisplay = ({ handleError, handleSubmittedBlog, user, blogs, handleLog
   if (user) {
     return (
       <div>
-        <h2>blogs</h2>
-        <p>{user.name} logged in</p>
-        <button type="button" onClick={handleLogout}>logout</button>
-
+        <h1>BLOGS</h1>
+        <p>{user.name} is logged in</p>
+        <Button type="button" onClick={handleLogout} colorScheme="teal" size="md">logout</Button>
         <Togglable buttonLabel="create new" ref={createBlogRef} >
          <CreateBlog
          handleSubmitBlog={handleSubmitBlog}

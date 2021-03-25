@@ -16,7 +16,7 @@ const userReducer = (state = null, action) => {
     case 'SET_USER':
       return action.payload
     case 'LOGOUT_USER':
-      return {}
+      return null
     default:
       return state
   }
