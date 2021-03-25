@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import BlogsDisplay from './components/BlogsDisplay'
 import Notifications from './components/Notications'
 import Error from './components/Error'
+import { setBlogs, create } from './reducers/blogsReducer'
 import { addNotif, removeNotif, addErrorNotif } from './reducers/notificationReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector(state => state.blogs)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -19,11 +20,10 @@ const App = () => {
     author: '',
     url: ''
   })
-  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
-      setBlogs( blogs )
+      dispatch(setBlogs(blogs))
     )  
   }, [])
 
@@ -90,6 +90,7 @@ const App = () => {
         author: '',
         url: ''
       })
+      dispatch(create(submittedBlog))
       dispatch(addNotif(`success added ${submittedBlog.title} by ${submittedBlog.author}`))
       setTimeout(() => {
         dispatch(removeNotif())
