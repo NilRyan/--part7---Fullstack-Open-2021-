@@ -1,6 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect} from 'react'
+import { useDispatch } from 'react-redux'
+import { likeBlog, deleteBlog } from '../reducers/blogsReducer'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
+
 const Blog = ({ blog, user}) => {
   const blogStyle = {
     paddingTop: 10,
@@ -9,7 +12,9 @@ const Blog = ({ blog, user}) => {
     borderWidth: 1,
     marginBottom: 5
   }
-  const [like, setLike] = useState(blog.likes);
+  const dispatch = useDispatch()
+ 
+  const like = blog.likes
   useEffect(() => {
     blogService.like( blog.id,
       {
@@ -21,12 +26,16 @@ const Blog = ({ blog, user}) => {
       }
     ) 
   }, [like])
+
   const handleLike = () => {
-    setLike(like + 1);
+    dispatch(likeBlog(blog.id));
   }
+  
   const handleRemove = async () => {
     if(window.confirm(`Would you really like to delete ${blog.title} by ${blog.author}?`)){
-      blogService.deleteBlog(blog.id);
+      await blogService.deleteBlog(blog.id);
+      dispatch(deleteBlog(blog.id))
+
     }
   }
 
