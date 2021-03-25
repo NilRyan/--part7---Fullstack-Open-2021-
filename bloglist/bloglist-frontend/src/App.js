@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Route, Switch, Link} from 'react-router-dom'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
@@ -11,6 +12,7 @@ import { addNotif, removeNotif, addErrorNotif } from './reducers/notificationRed
 import { setUser, logoutUser } from './reducers/userReducer'
 import { Container } from "@chakra-ui/react"
 import Users from './components/Users'
+import Header from './components/Header'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -112,15 +114,26 @@ const App = () => {
     <Container >
     <Error />
     <Notifications />
-    <BlogsDisplay
-     user={user}
-     newBlog={newBlog}
-     blogs={blogs}
-     handleLogout={handleLogout}
-     handleInput={handleInput}
-     handleSubmittedBlog={handleSubmittedBlog}
-     handleError={handleError}
-    /> 
+   
+      <Header user={user} handleLogout={handleLogout} />
+    <Switch>
+
+
+    </Switch>
+      <Route path="/api/users">
+       <Users />
+      </Route>
+
+      <Route path="/">
+        <BlogsDisplay
+          user={user}
+          newBlog={newBlog}
+          blogs={blogs}
+          handleInput={handleInput}
+          handleSubmittedBlog={handleSubmittedBlog}
+          handleError={handleError}
+          />
+      </Route>
     <LoginForm
      user={user}
      username={username} 
@@ -129,7 +142,7 @@ const App = () => {
      handleUser={handleUser}
      handleLogin={handleLogin}
      blogService={blogService} /> 
-    <Users />
+    
     </Container>
   )
 }

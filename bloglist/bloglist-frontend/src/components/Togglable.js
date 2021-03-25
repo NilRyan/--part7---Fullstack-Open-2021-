@@ -1,4 +1,5 @@
 import React, { useState, useImperativeHandle, forwardRef } from 'react';
+import { Button, Container } from '@chakra-ui/react'
 import PropTypes from 'prop-types';
 
 const Togglable = forwardRef((props, ref) => {
@@ -16,15 +17,15 @@ const Togglable = forwardRef((props, ref) => {
   })
 
   return (
-    <div>
+    <Container>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Button colorScheme="teal" size="sm" variant="outline" onClick={toggleVisibility}>{props.buttonLabel}</Button>
       </div>
       <div style={showWhenVisible}>
         {props.children}
-        <button onClick={toggleVisibility}>{props.hideLabel || "cancel"}</button>
+        <Button colorScheme="red" size="sm" variant="ghost" onClick={toggleVisibility}>{props.hideLabel || "cancel"}</Button>
       </div>
-    </div>
+    </Container>
   )
 }
 )

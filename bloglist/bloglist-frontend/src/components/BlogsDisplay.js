@@ -7,7 +7,7 @@ import CreateBlog from './CreateBlog'
 import PropTypes from 'prop-types'
 
 
-const BlogsDisplay = ({ handleError, handleSubmittedBlog, user, blogs, handleLogout, handleInput, newBlog}) => {
+const BlogsDisplay = ({ handleError, handleSubmittedBlog, user, blogs, handleInput, newBlog}) => {
   const createBlogRef = useRef();
 
   const handleSubmitBlog = async (e) => {
@@ -25,9 +25,7 @@ const BlogsDisplay = ({ handleError, handleSubmittedBlog, user, blogs, handleLog
   if (user) {
     return (
       <div>
-        <h1>BLOGS</h1>
-        <p>{user.name} is logged in</p>
-        <Button type="button" onClick={handleLogout} colorScheme="teal" size="md">logout</Button>
+      
         <Togglable buttonLabel="create new" ref={createBlogRef} >
          <CreateBlog
          handleSubmitBlog={handleSubmitBlog}

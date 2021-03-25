@@ -1,6 +1,7 @@
 import React, { useEffect} from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog, deleteBlog } from '../reducers/blogsReducer'
+import { Button } from '@chakra-ui/react'
 import Togglable from './Togglable'
 import blogService from '../services/blogs'
 
@@ -52,11 +53,11 @@ return (
      {blog.url}
     </div>
     <div >
-      {like} <button className="likes" onClick={handleLike}>like</button>
+      {like} <Button colorScheme="green" variant="solid" size="xs" className="likes" onClick={handleLike}>like</Button>
     </div>
     {blog?.user?.name}
     { blog.user.name === user.name ?
-      <button onClick={handleRemove} className="remove">remove</button>
+      <Button colorScheme="orange" variant="ghost" size="xs" onClick={handleRemove} className="remove">remove</Button>
       : null
     }
     
