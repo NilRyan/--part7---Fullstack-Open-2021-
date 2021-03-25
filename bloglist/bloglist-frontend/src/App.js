@@ -13,6 +13,7 @@ import { setUser, logoutUser } from './reducers/userReducer'
 import { Container } from "@chakra-ui/react"
 import Users, { UserBlog } from './components/Users'
 import Header from './components/Header'
+import { DetailedBlog } from './components/Blog'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -110,9 +111,12 @@ const App = () => {
       }, 3000)
   }
  
-  const match = useRouteMatch("/users/:id");
-  const userBlogs = match ? blogs.filter((blog) => blog.user.id === match.params.id)
+  const userMatch = useRouteMatch("/users/:id");
+  const userBlogs = userMatch ? blogs.filter((blog) => blog.user.id === userMatch.params.id)
     : null
+  
+  const blogMatch = useRouteMatch("/blogs/:id")
+  const blog = blogMatch ? blogs.find((blog) => blog.id === blogMatch.params.id) : null
 
   return (
     <Container >
@@ -121,7 +125,9 @@ const App = () => {
     
         <Header user={user} handleLogout={handleLogout} />
       <Switch>
-
+        <Route path="/blogs/:id">
+          {blog && <DetailedBlog blog={blog} user={user} />}
+        </Route>
         <Route path="/users/:id">
           <UserBlog blogs={userBlogs} />
         </Route>
