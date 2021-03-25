@@ -4,6 +4,13 @@ export const addNotif = (notif) => {
     payload: notif
   }
 }
+export const addErrorNotif = (notif) => {
+  return {
+    type: 'ADD_ERROR_NOTIF',
+    payload: notif
+  }
+}
+
 
 export const removeNotif = (notif) => {
   return {
@@ -11,12 +18,14 @@ export const removeNotif = (notif) => {
   }
 }
 
-const notificationReducer = (state = '', action) => {
+const notificationReducer = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_NOTIF':
-      return action.payload
+      return {...{...state, success: action.payload}}
     case 'REMOVE_NOTIF':
-      return '';
+      return {};
+    case 'ADD_ERROR_NOTIF':
+      return {...{...state, error: action.payload}}
     default:
       return state
   }

@@ -6,7 +6,7 @@ import LoginForm from './components/LoginForm'
 import BlogsDisplay from './components/BlogsDisplay'
 import Notifications from './components/Notications'
 import Error from './components/Error'
-import { addNotif, removeNotif } from './reducers/notificationReducer'
+import { addNotif, removeNotif, addErrorNotif } from './reducers/notificationReducer'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -57,9 +57,9 @@ const App = () => {
         dispatch(removeNotif())
       }, 3000)
     } catch (exception) {
-      setErrorMessage(`failed to login ${exception.message}`)
+      dispatch(addErrorNotif(`failed to login ${exception.message}`))
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(removeNotif())
       }, 3000)
       console.log(exception)
     }
@@ -97,16 +97,16 @@ const App = () => {
     }
   }
   const handleError = (exception) => {
-    setErrorMessage(`failed to create new blog ${exception.message}`)
+    dispatch(addErrorNotif(`failed to create new blog ${exception.message}`))
       setTimeout(() => {
-        setErrorMessage(null)
+        dispatch(removeNotif())
       }, 3000)
   }
  
   
   return (
     <div>
-    <Error errorMessage={errorMessage} />
+    <Error />
     <Notifications />
     <BlogsDisplay
      user={user}
