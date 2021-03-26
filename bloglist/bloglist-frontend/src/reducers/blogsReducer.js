@@ -54,10 +54,10 @@ const blogsReducer = (state = [], action) => {
       return [...blogs, likedBlog]
     
     case 'COMMENT':
-      const blags = state.filter((blog) => blog.id !== action.payload.id )
+      const commentBlogs = state.filter((blog) => blog.id !== action.payload.id )
       const commentedBlog = state.find( (blog) => blog.id === action.payload.id)
       commentedBlog.comments = [...commentedBlog.comments, action.payload.comment]
-      return [...blags, commentedBlog]
+      return [...commentBlogs, commentedBlog]
 
     default:
       return state
