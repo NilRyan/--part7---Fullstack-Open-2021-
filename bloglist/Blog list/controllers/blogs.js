@@ -1,6 +1,7 @@
 const blogsRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
+const Comment = require('../models/comment');
 const User = require('../models/user');
 const logger = require('../utils/logger');
 
@@ -32,14 +33,40 @@ blogsRouter.post('/', async (request, response, next) => {
   }
 });
 
+blogsRouter.post('/:id/comments', async (request, response, next) => {
+  try {
+    const { body } = request;
+    const { id } = request.params;
+
+    const blog = await Blog.findById(id);
+    logger.info(blog);
+    const comment = new Comment({
+      comment: body.comment,
+      blog: blog._id,
+    });
+
+    const savedComment = await comment.save();
+    // blog id is saved to the blog prop of user for populate method
+    blog.comments = blog.comments.concat(savedComment._id);
+    await blog.save();
+    response.status(201).json(savedComment);
+  } catch (error) {
+    next(error);
+  }
+});
+
 blogsRouter.get('/', async (request, response) => {
   // a join query functionality is done by mongoose by making multiple queries
   // the user: user_id pair is populated with the corresponding user who created the blog
-  const blogs = await Blog.find({}).populate('user', {
-    username: 1,
-    name: 1,
-    id: 1,
-  });
+  const blogs = await Blog.find({})
+    .populate('user', {
+      username: 1,
+      name: 1,
+      id: 1,
+    })
+    .populate('comments', {
+      comment: 1,
+    });
   logger.info('--BLOGS--', blogs);
   response.json(blogs);
 });

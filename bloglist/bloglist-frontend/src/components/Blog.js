@@ -75,6 +75,17 @@ export const DetailedBlog = ({blog, user}) => {
 
   )
 }
+
+export const BlogComments = ({comments}) => {
+  return (
+    <div>
+      <h1>COMMENTS</h1>
+      {comments.map((comment) => <li key={comment.id}>
+        {comment.comment}
+      </li>)}
+    </div>
+  )
+}
   
 
 

@@ -13,7 +13,7 @@ import { setUser, logoutUser } from './reducers/userReducer'
 import { Container } from "@chakra-ui/react"
 import Users, { UserBlog } from './components/Users'
 import Header from './components/Header'
-import { DetailedBlog } from './components/Blog'
+import { BlogComments, DetailedBlog } from './components/Blog'
 import NavBar from './components/NavBar'
 
 const App = () => {
@@ -120,7 +120,7 @@ const App = () => {
   
   const blogMatch = useRouteMatch("/blogs/:id")
   const blog = blogMatch ? blogs.find((blog) => blog.id === blogMatch.params.id) : null
-
+  console.log(blog)
   return (
     <Container >
       <Error />
@@ -132,6 +132,7 @@ const App = () => {
        
         <Route path="/blogs/:id">
           {blog && <DetailedBlog blog={blog} user={user} />}
+          {blog?.comments?.length > 0 && <BlogComments comments={blog.comments}  />}
         </Route>
 
         <Route path="/users/:id">
