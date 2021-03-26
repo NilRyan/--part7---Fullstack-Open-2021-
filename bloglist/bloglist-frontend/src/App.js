@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Route, Switch, Link, useRouteMatch} from 'react-router-dom'
+import { useDispatch, useSelector  } from 'react-redux'
+import { Route, Switch, useRouteMatch, useHistory} from 'react-router-dom'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
@@ -14,9 +14,11 @@ import { Container } from "@chakra-ui/react"
 import Users, { UserBlog } from './components/Users'
 import Header from './components/Header'
 import { DetailedBlog } from './components/Blog'
+import NavBar from './components/NavBar'
 
 const App = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
   const blogs = useSelector(state => state.blogs)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -77,6 +79,7 @@ const App = () => {
     console.log('logout')
     dispatch(logoutUser());
     window.localStorage.removeItem('User');
+    history.push("/")
   }
 
   const handleUser = (e) => {
@@ -122,17 +125,20 @@ const App = () => {
     <Container >
       <Error />
       <Notifications />
-    
-        <Header user={user} handleLogout={handleLogout} />
+
+      {user && <NavBar/>}
+      {user && <Header user={user} handleLogout={handleLogout} />}
       <Switch>
+       
         <Route path="/blogs/:id">
           {blog && <DetailedBlog blog={blog} user={user} />}
         </Route>
+
         <Route path="/users/:id">
-          <UserBlog blogs={userBlogs} />
+          {user && <UserBlog blogs={userBlogs} />}
         </Route>
         <Route path="/users">
-        <Users />
+          {user && <Users />}
         </Route>
 
         <Route path="/">
