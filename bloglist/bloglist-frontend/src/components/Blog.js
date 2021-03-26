@@ -1,9 +1,12 @@
-import React, { useEffect} from 'react'
+import React, { useEffect, useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { likeBlog, deleteBlog } from '../reducers/blogsReducer'
 import { Link as ReactLink} from 'react-router-dom'
-import { Button, Link} from '@chakra-ui/react'
-import Togglable from './Togglable'
+import { Button, Link, FormControl,
+  FormLabel,
+  Textarea,
+  FormHelperText} from '@chakra-ui/react'
+
 import blogService from '../services/blogs'
 
 const blogStyle = {
@@ -77,9 +80,10 @@ export const DetailedBlog = ({blog, user}) => {
 }
 
 export const BlogComments = ({comments}) => {
+ 
   return (
     <div>
-      <h1>COMMENTS</h1>
+    <h1>COMMENTS</h1>
       {comments.map((comment) => <li key={comment.id}>
         {comment.comment}
       </li>)}

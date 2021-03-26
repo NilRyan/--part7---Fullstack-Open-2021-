@@ -15,6 +15,7 @@ import Users, { UserBlog } from './components/Users'
 import Header from './components/Header'
 import { BlogComments, DetailedBlog } from './components/Blog'
 import NavBar from './components/NavBar'
+import Comment from './components/Comment'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -132,7 +133,8 @@ const App = () => {
        
         <Route path="/blogs/:id">
           {blog && <DetailedBlog blog={blog} user={user} />}
-          {blog?.comments?.length > 0 && <BlogComments comments={blog.comments}  />}
+          {blog && <Comment blog={blog} />}
+          {blog?.comments?.length > 0 && <BlogComments comments={blog.comments} blog={blog}  />}
         </Route>
 
         <Route path="/users/:id">

@@ -36,4 +36,10 @@ const like = async (id, likedBlog) => {
   return response.data;
 }
 
-export default { getAll, setToken, create, like, deleteBlog }
+const addComment = async (id, comment) => {
+  const blogUrl = `${baseUrl}/${id}/comments`
+  const response = await axios.post(blogUrl, comment)
+  return response.data;
+} 
+
+export default { getAll, setToken, create, like, deleteBlog, addComment }

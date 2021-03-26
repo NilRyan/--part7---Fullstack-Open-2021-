@@ -25,6 +25,15 @@ export const deleteBlog = (id) => {
     payload: id
   }
 }
+export const addComment = (id, comment) => {
+  return {
+    type: 'COMMENT',
+    payload: {
+      id,
+      comment
+    }
+  }
+}
 
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
@@ -43,6 +52,12 @@ const blogsReducer = (state = [], action) => {
       const likedBlog = state.find((blog) => blog.id === action.payload)
       likedBlog.likes += 1
       return [...blogs, likedBlog]
+    
+    case 'COMMENT':
+      const blags = state.filter((blog) => blog.id !== action.payload.id )
+      const commentedBlog = state.find( (blog) => blog.id === action.payload.id)
+      commentedBlog.comments = [...commentedBlog.comments, action.payload.comment]
+      return [...blags, commentedBlog]
 
     default:
       return state
